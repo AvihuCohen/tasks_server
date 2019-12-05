@@ -20,6 +20,10 @@ const listSchema = new Schema(
         userId: {
             type: Schema.Types.ObjectId,
             ref: 'User'
+        },
+        isRemovable: {
+            type: Boolean,
+            required: true
         }
     },
     { timestamps: true }
