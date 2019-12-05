@@ -2,7 +2,7 @@ const express = require('express');
 const adminController = require('../controllers/admin');
 
 
-const router = exports.router();
+const router = express.Router();
 
 // /admin/lists => GET
 router.get('/lists', adminController.getLists);
