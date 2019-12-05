@@ -1,28 +1,25 @@
 const express = require('express');
 const mongoose = require('mongoose');
-
+const cors = require('cors');
+const errorMiddleware = require('./middlewares/error-handler');
 
 const app = express();
 
 
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader(
-      'Access-Control-Allow-Methods',
-      'OPTIONS, GET, POST, PUT, PATCH, DELETE'
-    );
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-  });
+app.use();
 
-  app.use((error, req, res, next) => {
-    console.log(error.message);
-    const status = error.statusCode || 500;
-    const message = error.message;
-    const data = error.data;
-    res.status(status).json({ message: message, data: data });
-  });
+  // Enable All CORS Requests
+  app.use(cors());
 
+
+  //APP Routs
+
+
+  // Catch all errors that thrown
+  app.use(errorMiddleware);
+
+
+  // Connect to DB
   mongoose.connect(
       'mongodb+srv://roystern92:r123456r@cluster0-5et3x.mongodb.net/test?retryWrites=true&w=majority'
   )
