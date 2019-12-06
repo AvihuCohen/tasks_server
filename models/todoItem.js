@@ -15,6 +15,9 @@ const todoItemSchema = new Schema(
             type: Boolean,
             require: true
         },
+        creator:{
+            type: Schema.Types.ObjectId,
+            ref: 'User'        }
     },
     { timestamps: true }
 );

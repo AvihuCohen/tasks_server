@@ -1,7 +1,7 @@
 exports.validationResultErrorHandler = (req) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        const error = new Error('Validation failed.');
+        const error = new Error('Validation failed, entered data is incorrect.');
         error.statusCode = 422;
         error.data = errors.array();
         throw error;
@@ -15,10 +15,10 @@ exports.asyncErrorHandler = (err, next) => {
     next(err);
 };
 
-exports.errorCheckHandler = (valid, msg) => {
+exports.errorCheckHandler = (valid, msg , statuseCode) => {
     if (!valid) {
         const error = new Error(msg);
-        error.statusCode = 401;
+        error.statusCode = statuseCode;
         throw error;
     }
 };

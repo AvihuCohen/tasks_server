@@ -7,17 +7,17 @@ const listSchema = new Schema(
             type: String,
             required: true
         },
-        puclic: {
+        isPublic: {
             type: Boolean,
             required: true
         },
-        todos: [
+        tasks: [
             {
                 type: Schema.Types.ObjectId,
                 ref: 'TodoItem'
             }
         ],
-        userId: {
+        creator: {
             type: Schema.Types.ObjectId,
             ref: 'User'
         },
@@ -26,7 +26,7 @@ const listSchema = new Schema(
             required: true
         }
     },
-    { timestamps: true }
+    {timestamps: true}
 );
 
 module.exports = mongoose.model('List', listSchema);

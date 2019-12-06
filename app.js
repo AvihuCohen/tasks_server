@@ -5,9 +5,13 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 
+console.log("$$$$$$$$$$$$$$$$$$$$$$");
+console.log(path.join(__dirname,''));
+console.log("$$$$$$$$$$$$$$$$$$$$$$");
+
 
 //configuration
-const multerConfig = require('./configuration/multer-configuration');
+const multerConfig = require('./util/configuration/multer-configuration');
 
 //Middleware
 const errorMiddleware = require('./middlewares/error-handler');
