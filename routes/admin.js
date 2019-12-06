@@ -4,32 +4,35 @@ const adminController = require('../controllers/admin');
 //validations
 const validations = require('../util/validations/admin-validations');
 
+// middleware
+const isAuth = require('../middlewares/is-auth');
+
 
 const router = express.Router();
 
 // /admin/lists => GET
-router.get('/lists', adminController.getLists);
+router.get('/lists', isAuth, adminController.getLists);
 
 // /admin/list/:listId => GET
-router.get('/list/:listId', adminController.getList);
+router.get('/list/:listId', isAuth, adminController.getList);
 
 // /admin/list => Post
-router.post('/list', validations.editOrCreateListValidations, adminController.createList);
+router.post('/list', isAuth, validations.editOrCreateListValidations, adminController.createList);
 
 // /admin/list/:listId => Put
-router.put('/list/:listId', validations.editOrCreateListValidations, adminController.editList);
+router.put('/list/:listId', isAuth, validations.editOrCreateListValidations, adminController.editList);
 
 // /admin/list/:listId => Delete
-router.delete('/list/:listId', validations.removeListValidations, adminController.removeList);
+router.delete('/list/:listId', isAuth, validations.removeListValidations, adminController.removeList);
 
 // /admin/todo-item => Post
-router.post('/todo-item/:listId', validations.addTodoItemValidations, adminController.addTodoItemToList);
+router.post('/todo-item/:listId', isAuth, validations.addTodoItemValidations, adminController.addTodoItemToList);
 
 // /admin/todo-item => Put
-router.put('/todo-item/:id', validations.editTodoItemValidations, adminController.editTodoItemInList);
+router.put('/todo-item/:id', isAuth, validations.editTodoItemValidations, adminController.editTodoItemInList);
 
 // /admin/todo-item/:todo-item-Id => Delete
-router.delete('/todo-item/:id', adminController.removeTodoItemFromList);
+router.delete('/todo-item/:id', isAuth, adminController.removeTodoItemFromList);
 
 module.exports = router;
 
