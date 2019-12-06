@@ -1,6 +1,9 @@
 const express = require('express');
 const adminController = require('../controllers/admin');
 
+//validations
+const validations = require('../util/validations/admin-validations');
+
 
 const router = express.Router();
 
@@ -11,13 +14,13 @@ router.get('/lists', adminController.getLists);
 router.get('/list/:listID', adminController.getList);
 
 // /admin/list => Post
-router.post('/list', adminController.createList);
+router.post('/list', validations.editOrCreateListValidations, adminController.createList);
 
 // /admin/list/:listID => Put
-router.put('/list/:listID', adminController.editList);
+router.put('/list/:listID', validations.editOrCreateListValidations, adminController.editList);
 
 // /admin/list/:listID => Delete
-router.delete('/list/:listID', adminController.removeList);
+router.delete('/list/:listID', validations.removeListValidations, adminController.removeList);
 
 // /admin/todo-item => Post
 router.post('/todo-item/:listID', adminController.addTodoItemToList);
