@@ -23,7 +23,8 @@ exports.signup = async (req, res, next) => {
             email: email,
             name: name,
             password: hashPassword,
-            imagePath: imagePath
+            imagePath: imagePath,
+            lists:[]
         });
 
     } catch (err) {

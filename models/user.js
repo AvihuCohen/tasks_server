@@ -19,9 +19,13 @@ const userSchema = new Schema(
         imagePath: {
             type: String,
             required: true
+        },
+        lists: {
+            type: Schema.Types.ObjectID,
+            ref: 'List'
         }
     },
-    { timestamps: true }
+    {timestamps: true}
 );
 
 module.exports = mongoose.model('User', userSchema);

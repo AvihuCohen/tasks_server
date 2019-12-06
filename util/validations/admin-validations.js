@@ -1,5 +1,6 @@
 const {body} = require('express-validator/check');
 
+
 exports.editOrCreateListValidations =
     [
         body('name')
