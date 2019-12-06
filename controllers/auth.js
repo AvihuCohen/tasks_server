@@ -70,6 +70,7 @@ exports.getUserProfile = async (req, res, next) => {
             email: user.email,
             imagePath: user.imagePath
         };
+        res.status(200).json({profile: profile, userId: user._id.toString()});
     } catch (err) {
         errors.asyncErrorHandler(err, next);
     }

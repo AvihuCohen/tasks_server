@@ -18,3 +18,23 @@ exports.removeListValidations =
             .not()
             .isEmpty()
     ];
+
+exports.addTodoItemValidations =
+    [
+        body('task')
+            .trim()
+            .not()
+            .isEmpty()
+    ];
+
+exports.editTodoItemValidations =
+    [
+        body('task')
+            .trim()
+            .not()
+            .isEmpty(),
+        body('completed')
+            .isBoolean(),
+        body('important')
+            .isBoolean()
+    ];

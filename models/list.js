@@ -11,12 +11,13 @@ const listSchema = new Schema(
             type: Boolean,
             required: true
         },
-        tasks: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'TodoItem'
-            }
-        ],
+        tasks:
+            [
+                {
+                    type: Schema.Types.ObjectId,
+                    ref: 'TodoItem'
+                }
+            ],
         creator: {
             type: Schema.Types.ObjectId,
             ref: 'User'

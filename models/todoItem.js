@@ -15,11 +15,18 @@ const todoItemSchema = new Schema(
             type: Boolean,
             require: true
         },
-        creator:{
+        creator: {
             type: Schema.Types.ObjectId,
-            ref: 'User'        }
+            ref: 'User',
+            require: true
+        },
+        belongTo:{
+            type: Schema.Types.ObjectId,
+            ref: 'List',
+            require: true
+        }
     },
-    { timestamps: true }
+    {timestamps: true}
 );
 
 module.exports = mongoose.model('TodoItem', todoItemSchema);

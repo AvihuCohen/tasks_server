@@ -23,10 +23,10 @@ router.put('/list/:listId', validations.editOrCreateListValidations, adminContro
 router.delete('/list/:listId', validations.removeListValidations, adminController.removeList);
 
 // /admin/todo-item => Post
-router.post('/todo-item/:listId', adminController.addTodoItemToList);
+router.post('/todo-item/:listId', validations.addTodoItemValidations, adminController.addTodoItemToList);
 
 // /admin/todo-item => Put
-router.put('/todo-item/:id', adminController.editTodoItemInList);
+router.put('/todo-item/:id', validations.editTodoItemValidations, adminController.editTodoItemInList);
 
 // /admin/todo-item/:todo-item-Id => Delete
 router.delete('/todo-item/:id', adminController.removeTodoItemFromList);
