@@ -55,7 +55,8 @@ exports.login = async (req, res, next) => {
             'fitzFarSeerIsTheTrueKingOfTheSixDuchies',
             {expiresIn: '1h'}
         );
-        res.status(200).json({message: 'User Logged in successfully.', token: token, userId: user._id.toString()});
+        console.log(token);
+            res.status(200).json({message: 'User Logged in successfully.', token: token, userId: user._id.toString()});
 
     } catch (err) {
         errors.asyncErrorHandler(err, next);

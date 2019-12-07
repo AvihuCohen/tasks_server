@@ -17,7 +17,7 @@ const adminRoutes = require('./routes/admin');
 const authRoutes = require('./routes/auth');
 
 //Mongo Atlas Connection URI
-const mongoAtlasUri = 'mongodb+srv://avihu:avihucohen@todolistapp-5et3x.mongodb.net/test?retryWrites=true&w=majority';
+const mongoAtlasUri = 'mongodb+srv://avihu:avihucohen@todolistapp-5et3x.mongodb.net/TodoList?retryWrites=true&w=majority';
 
 
 const app = express();

@@ -4,7 +4,6 @@ const errors = require('../util/errors/error-handlers');
 module.exports =  (req, res, next) => {
     const authHeader = req.get('Authorization');
     errors.errorCheckHandler(authHeader, "Not authenticate.");
-
     const token = authHeader.split(' ')[1];
     let decodedToken;
 

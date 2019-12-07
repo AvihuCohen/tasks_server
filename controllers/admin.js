@@ -66,8 +66,6 @@ exports.createList = async (req, res, next) => {
             creator: req.userId,
             isRemovable: true
         });
-
-        console.log("Line 63 - Potential bug");
         await list.save();
         const user = await User.findById(req.userId);
         user.lists.push(list);
@@ -126,7 +124,11 @@ exports.removeList = async (req, res, next) => {
         user.lists.pull(listId);
         await user.save();
 
-        res.status(200).json({message: 'Removed list successfully.',});
+        res.status(200)
+            .json({
+                message: 'Removed list successfully.',
+                creator: {_id: user._id, name: user.name}
+            });
     } catch (err) {
         errors.asyncErrorHandler(err, next);
     }
@@ -154,7 +156,11 @@ exports.addTodoItemToList = async (req, res, next) => {
         list.tasks.push(todo);
         await list.save();
 
-        res.status(200).json({message: 'Created a new todo item successfully.'});
+        res.status(200).json({
+            message: 'Created a new todo item successfully.',
+            creator: {_id: user._id, name: user.name},
+            todo: todo
+        });
     } catch (err) {
         errors.asyncErrorHandler(err, next);
     }
@@ -173,7 +179,11 @@ exports.removeTodoItemFromList = async (req, res, next) => {
 
         list.tasks.pull(todoId);
         await TodoItem.findByIdAndRemove(todoId);
-        res.status(200).json({message: 'Removed a todo item successfully.'});
+        res.status(200)
+            .json({
+                message: 'Removed a todo item successfully.',
+                creator: {_id: user._id, name: user.name}
+            });
     } catch (err) {
         errors.asyncErrorHandler(err, next);
     }
@@ -195,7 +205,11 @@ exports.editTodoItemInList = async (req, res, next) => {
         todo.important = important;
         await todo.save();
 
-        res.status(200).json({message: 'Todo item was updated successfully.'});
+        res.status(200).json({
+            message: 'Todo item was updated successfully.',
+            creator: {_id: user._id, name: user.name},
+            todo: todo
+        });
     } catch (err) {
         errors.asyncErrorHandler(err, next);
     }
