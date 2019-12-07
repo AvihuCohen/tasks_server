@@ -9,24 +9,28 @@ const List = require('../models/list');
 const TodoItem = require('../models/todoItem');
 
 
-exports.signup = async (req, res, next) => {
-    errors.validationResultErrorHandler(req);
-    errors.errorCheckHandler(req.file, 'No image provided.', 422);
-    const email = req.body.email;
-    const name = req.body.name;
-    const password = req.body.password;
-    const imagePath = req.file.path;
-
+exports.signUp = async (req, res, next) => {
     try {
+        errors.validationResultErrorHandler(req);
+        errors.errorCheckHandler(req.file, 'No image provided.', 422);
+
+        const email = req.body.email;
+        const name = req.body.name;
+        const password = req.body.password;
+        const imagePath = req.file.path;
+
+
         const hashPassword = await bcrypt.hash(password, 12);
         const user = new User({
             email: email,
             name: name,
             password: hashPassword,
             imagePath: imagePath,
-            lists:[]
+            lists: []
         });
-
+        user.save();
+        console.log("User signed up successfully.");
+        res.status(200).json({message: 'User signed up successfully.'});
     } catch (err) {
         errors.asyncErrorHandler(err, next);
     }
@@ -34,12 +38,11 @@ exports.signup = async (req, res, next) => {
 
 
 exports.login = async (req, res, next) => {
-    errors.validationResultErrorHandler(req);
-    const email = req.body.email;
-    const password = req.body.password;
-    let loadedUser;
-
     try {
+        errors.validationResultErrorHandler(req);
+        const email = req.body.email;
+        const password = req.body.password;
+
         const user = await User.findOne({email: email});
         errors.errorCheckHandler(user, 'A user with this email could not be found.', 401);
         const isEqual = await bcrypt.compare(password, user.password);
@@ -52,7 +55,7 @@ exports.login = async (req, res, next) => {
             'fitzFarSeerIsTheTrueKingOfTheSixDuchies',
             {expiresIn: '1h'}
         );
-        res.status(200).json({token: token, userId: user._id.toString()});
+        res.status(200).json({message: 'User Logged in successfully.', token: token, userId: user._id.toString()});
 
     } catch (err) {
         errors.asyncErrorHandler(err, next);
@@ -61,7 +64,6 @@ exports.login = async (req, res, next) => {
 };
 
 exports.getUserProfile = async (req, res, next) => {
-
     try {
         const user = await User.findById(req.userId);
         errors.errorCheckHandler(user, 'User Not Found', 404);
@@ -77,13 +79,13 @@ exports.getUserProfile = async (req, res, next) => {
 }
 
 exports.editUserProfile = async (req, res, next) => {
-    errors.validationResultErrorHandler(req);
-    errors.errorCheckHandler(req.file, 'No image provided.', 422);
-    const filePath = req.file.path;
-    const email = req.body.email;
-    const name = req.body.name;
-
     try {
+        errors.validationResultErrorHandler(req);
+        errors.errorCheckHandler(req.file, 'No image provided.', 422);
+        const filePath = req.file.path;
+        const email = req.body.email;
+        const name = req.body.name;
+
         const user = await User.findById(req.userId);
         errors.errorCheckHandler(user, 'User Not Found', 404);
         if (filePath !== user.imagePath) {
@@ -110,8 +112,4 @@ exports.deleteAccount = async (req, res, next) => {
         errors.asyncErrorHandler(err, next);
     }
 };
-
-
-
-
 

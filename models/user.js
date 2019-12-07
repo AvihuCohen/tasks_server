@@ -20,10 +20,12 @@ const userSchema = new Schema(
             type: String,
             required: true
         },
-        lists: {
-            type: Schema.Types.ObjectID,
-            ref: 'List'
-        }
+        lists: [
+            {
+                type: Schema.Types.ObjectID,
+                ref: 'List'
+            }
+        ]
     },
     {timestamps: true}
 );

@@ -1,7 +1,6 @@
 const {body} = require('express-validator/check');
 const User = require('../../models/user');
 
-
 exports.signupValidations =
     [
         body('email')

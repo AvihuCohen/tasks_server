@@ -8,16 +8,17 @@ const validations = require('../util/validations/auth-validations');
 // middleware
 const isAuth = require('../middlewares/is-auth');
 
-const router = express.Router();
 
+
+const router = express.Router();
 
 
 // /auth/signup => Post
 
-router.post('/signup', validations.signupValidations, authController.signup);
+router.post('/signup', validations.signupValidations, authController.signUp);
 
 // /auth/login => Post
-router.post('/login', validations.signupValidations,authController.login);
+router.post('/login', validations.loginValidations, authController.login);
 
 // /auth/profile => Get
 router.get('/profile', isAuth, authController.getUserProfile);

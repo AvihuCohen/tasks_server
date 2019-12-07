@@ -1,24 +1,22 @@
 const multer = require('multer');
 
-exports.fileStorage = multer.diskStorage(
-    {
-        destination: (req, file, cb) => {
-            cb(null, 'images')
-        },
-        filename: (req, file, cb) => {
-            cb(null, new Date().toISOString() + '-' + file.originalname);
-        }
+exports.fileStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'images');
+    },
+    filename: (req, file, cb) => {
+        cb(null, new Date().toISOString() + '-' + file.originalname);
     }
-);
+});
 
 exports.fileFilter = (req, file, cb) => {
-    if(
-        file.mimeType === 'image/png' ||
-        file.mimeType === 'image/jpg' ||
-        file.mimeType === 'image/jpeg'
-    ){
+    if (
+        file.mimetype === 'image/png' ||
+        file.mimetype === 'image/jpg' ||
+        file.mimetype === 'image/jpeg'
+    ) {
         cb(null, true);
-    }else {
+    } else {
         cb(null, false);
     }
 };

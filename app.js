@@ -5,10 +5,6 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 
-console.log("$$$$$$$$$$$$$$$$$$$$$$");
-console.log(path.join(__dirname,''));
-console.log("$$$$$$$$$$$$$$$$$$$$$$");
-
 
 //configuration
 const multerConfig = require('./util/configuration/multer-configuration');
@@ -26,24 +22,21 @@ const mongoAtlasUri = 'mongodb+srv://avihu:avihucohen@todolistapp-5et3x.mongodb.
 
 const app = express();
 
-
-// Enable All CORS Requests
-app.use(cors());
-
 // Parse incoming request bodies only parses json and only looks at requests where the Content-Type header matches the type option.
 app.use(bodyParser.json());
 
 //configure multer where to store the file and what kind of files to are allowed
 app.use(
-    multer(
-        {
-            storage: multerConfig.fileStorage,
-            fileFilter: multerConfig.fileFilter
-        }
-    ).single('image')
+    multer({ storage: multerConfig.fileStorage, fileFilter: multerConfig.fileFilter}).single('image')
 );
+
 // make images folder a static folder
 app.use('images', express.static(path.join(__dirname, 'images')));
+
+// Enable All CORS Requests
+app.use(cors());
+
+
 
 
 //APP Routs

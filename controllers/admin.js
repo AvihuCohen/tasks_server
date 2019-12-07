@@ -54,12 +54,11 @@ exports.getList = async (req, res, next) => {
 };
 
 exports.createList = async (req, res, next) => {
-    const listName = req.body.name;
-    const isPublic = req.body.isPublic;
-
-    errors.validationResultErrorHandler(req);
-
     try {
+        const listName = req.body.name;
+        const isPublic = req.body.isPublic;
+
+        errors.validationResultErrorHandler(req);
         const list = new List({
             name: listName,
             isPublic: isPublic,
@@ -84,13 +83,12 @@ exports.createList = async (req, res, next) => {
 };
 
 exports.editList = async (req, res, next) => {
-    const listId = req.params.listId;
-    const listName = req.body.name;
-    const isPublic = req.body.isPublic;
-
-    errors.validationResultErrorHandler(req);
-
     try {
+        const listId = req.params.listId;
+        const listName = req.body.name;
+        const isPublic = req.body.isPublic;
+
+        errors.validationResultErrorHandler(req);
         const list = await List.findById(listId);
         errors.errorCheckHandler(list, 'List not found.', 404);
 
@@ -136,12 +134,11 @@ exports.removeList = async (req, res, next) => {
 
 
 exports.addTodoItemToList = async (req, res, next) => {
-    const listId = req.params.listId;
-    const task = req.body.task;
-
-    errors.validationResultErrorHandler(req);
-
     try {
+        const listId = req.params.listId;
+        const task = req.body.task;
+
+        errors.validationResultErrorHandler(req);
         const list = await List.findById(listId);
         errors.errorCheckHandler(list, 'List was not found', 404);
 
@@ -183,14 +180,13 @@ exports.removeTodoItemFromList = async (req, res, next) => {
 };
 
 exports.editTodoItemInList = async (req, res, next) => {
-    errors.validationResultErrorHandler(req);
-
-    const todoId = req.params.id;
-    const task = req.body.task;
-    const completed = req.body.completed;
-    const important = req.body.important;
-
     try {
+        errors.validationResultErrorHandler(req);
+
+        const todoId = req.params.id;
+        const task = req.body.task;
+        const completed = req.body.completed;
+        const important = req.body.important;
         const todo = await TodoItem.findById(todoId);
         errors.errorCheckHandler(todo, 'Todo item was not found', 404);
 
