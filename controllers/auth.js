@@ -31,7 +31,7 @@ exports.signUp = async (req, res, next) => {
         user.save();
 
         console.log("User signed up successfully.");
-
+        
         const token = jwt.sign(
             {
                 email: user.email,
@@ -41,12 +41,15 @@ exports.signUp = async (req, res, next) => {
             { expiresIn: '1h' }
         );
 
+        const expiresTimeInMiliseconds = (1000 * 60 * 60) ;
+
         console.log(token);
 
         res.status(200).json({
             message: 'User signed up successfully.',
             token: token,
-            userId: user._id.toString()
+            userId: user._id.toString(),
+            expiresTimeInMiliseconds:expiresTimeInMiliseconds
         });
     } catch (err) {
         errors.asyncErrorHandler(err, next);
