@@ -29,8 +29,25 @@ exports.signUp = async (req, res, next) => {
             lists: []
         });
         user.save();
+
         console.log("User signed up successfully.");
-        res.status(200).json({message: 'User signed up successfully.'});
+
+        const token = jwt.sign(
+            {
+                email: user.email,
+                userId: user._id.toString()
+            },
+            'fitzFarSeerIsTheTrueKingOfTheSixDuchies',
+            { expiresIn: '1h' }
+        );
+
+        console.log(token);
+
+        res.status(200).json({
+            message: 'User signed up successfully.',
+            token: token,
+            userId: user._id.toString()
+        });
     } catch (err) {
         errors.asyncErrorHandler(err, next);
     }
@@ -43,7 +60,7 @@ exports.login = async (req, res, next) => {
         const email = req.body.email;
         const password = req.body.password;
 
-        const user = await User.findOne({email: email});
+        const user = await User.findOne({ email: email });
         errors.errorCheckHandler(user, 'A user with this email could not be found.', 401);
         const isEqual = await bcrypt.compare(password, user.password);
         errors.errorCheckHandler(isEqual, 'Wrong password', 401);
@@ -53,10 +70,14 @@ exports.login = async (req, res, next) => {
                 userId: user._id.toString()
             },
             'fitzFarSeerIsTheTrueKingOfTheSixDuchies',
-            {expiresIn: '1h'}
+            { expiresIn: '1h' }
         );
         console.log(token);
-            res.status(200).json({message: 'User Logged in successfully.', token: token, userId: user._id.toString()});
+        res.status(200).json({
+            message: 'User Logged in successfully.',
+            token: token, userId: user._id.toString()
+        }
+        );
 
     } catch (err) {
         errors.asyncErrorHandler(err, next);
@@ -73,7 +94,7 @@ exports.getUserProfile = async (req, res, next) => {
             email: user.email,
             imagePath: user.imagePath
         };
-        res.status(200).json({profile: profile, userId: user._id.toString()});
+        res.status(200).json({ profile: profile, userId: user._id.toString() });
     } catch (err) {
         errors.asyncErrorHandler(err, next);
     }
@@ -96,7 +117,7 @@ exports.editUserProfile = async (req, res, next) => {
         user.email = email;
         user.name = name;
         const result = await user.save();
-        res.status(200).json({message: 'User profile was updated.', user: result});
+        res.status(200).json({ message: 'User profile was updated.', user: result });
     } catch (e) {
         errors.asyncErrorHandler(err, next);
     }
@@ -105,10 +126,10 @@ exports.deleteAccount = async (req, res, next) => {
     try {
         const user = await User.findById(req.userId);
         files.clearImage(user.imagePath);
-        await TodoItem.deleteMany({creator: user._id});
-        await List.deleteMany({creator: user._id});
+        await TodoItem.deleteMany({ creator: user._id });
+        await List.deleteMany({ creator: user._id });
         await User.findByIdAndRemove(user._id);
-        res.status(200).json({message: 'Account was deleted.'});
+        res.status(200).json({ message: 'Account was deleted.' });
     } catch (err) {
         errors.asyncErrorHandler(err, next);
     }
