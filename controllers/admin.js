@@ -57,6 +57,7 @@ exports.createList = async (req, res, next) => {
     try {
         const listName = req.body.name;
         const isPublic = req.body.isPublic;
+        const isRemovable = req.body.isRemovable;
 
         errors.validationResultErrorHandler(req);
         const list = new List({
@@ -64,7 +65,7 @@ exports.createList = async (req, res, next) => {
             isPublic: isPublic,
             tasks: [],
             creator: req.userId,
-            isRemovable: true
+            isRemovable: isRemovable
         });
         await list.save();
         const user = await User.findById(req.userId);

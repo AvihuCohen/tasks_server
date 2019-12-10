@@ -30,10 +30,13 @@ app.use(
     multer({ storage: multerConfig.fileStorage, fileFilter: multerConfig.fileFilter}).single('image')
 );
 
+console.log("DDD " +  path.join(__dirname, 'images'));
 // make images folder a static folder
-app.use('images', express.static(path.join(__dirname, 'images')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Enable All CORS Requests
+
+
 app.use(cors());
 
 

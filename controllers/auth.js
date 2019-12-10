@@ -12,12 +12,20 @@ const TodoItem = require('../models/todoItem');
 exports.signUp = async (req, res, next) => {
     try {
         errors.validationResultErrorHandler(req);
-        errors.errorCheckHandler(req.file, 'No image provided.', 422);
+        // errors.errorCheckHandler(req.file, 'No image provided.', 422);
+        
+        let imagePath;
+        
+        if(!req.file){
+            imagePath = 'images/default-logo.jpg'
+        }else{
+            imagePath = req.file.path;
+        }
+
 
         const email = req.body.email;
         const name = req.body.name;
         const password = req.body.password;
-        const imagePath = req.file.path;
 
 
         const hashPassword = await bcrypt.hash(password, 12);
@@ -30,8 +38,6 @@ exports.signUp = async (req, res, next) => {
         });
         user.save();
 
-        console.log("User signed up successfully.");
-        
         const token = jwt.sign(
             {
                 email: user.email,
@@ -42,9 +48,6 @@ exports.signUp = async (req, res, next) => {
         );
 
         const expiresTimeInMiliseconds = (1000 * 60 * 60) ;
-
-        console.log(token);
-
         res.status(200).json({
             message: 'User signed up successfully.',
             token: token,
@@ -103,6 +106,7 @@ exports.getUserProfile = async (req, res, next) => {
     }
 }
 
+//Todo - to update that user doesn't need to send a file
 exports.editUserProfile = async (req, res, next) => {
     try {
         errors.validationResultErrorHandler(req);

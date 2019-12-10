@@ -2,11 +2,10 @@ const jwt = require('jsonwebtoken');
 const errors = require('../util/errors/error-handlers');
 
 module.exports =  (req, res, next) => {
-    const authHeader = req.get('Authorization');
-    errors.errorCheckHandler(authHeader, "Not authenticate.");
-    const token = authHeader.split(' ')[1];
+    const token = req.get('Authorization').split(' ')[1];
+    // console.log("token - " + req.get('Authorization'));
+    errors.errorCheckHandler(token, "Not authenticate.");
     let decodedToken;
-
     try{
         decodedToken =  jwt.verify(token, 'fitzFarSeerIsTheTrueKingOfTheSixDuchies');
     }catch (err) {
