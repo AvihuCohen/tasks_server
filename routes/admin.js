@@ -14,7 +14,7 @@ const router = express.Router();
 router.get('/lists', isAuth, adminController.getLists);
 
 // /admin/list/:listId => GET
-router.get('/list/:listId', isAuth, adminController.getList);
+router.get('/list/:listName', isAuth, adminController.getList);
 
 // /admin/list => Post
 router.post('/list', isAuth, validations.editOrCreateListValidations, adminController.createList);

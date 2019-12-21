@@ -31,9 +31,9 @@ exports.getLists = async (req, res, next) => {
 
 exports.getList = async (req, res, next) => {
     try {
-        const listId = req.params.listId;
+        const listName = req.params.listName;
 
-        const list = await List.findById(listId)
+        const list = await List.findOne({name: listName})
             .populate('tasks')
             .execPopulate();
         errors.errorCheckHandler(list, 'List was not found.', 404);
@@ -44,7 +44,7 @@ exports.getList = async (req, res, next) => {
 
         res.status(200).json({
                 message: 'Fetched list successfully!',
-                todoList: list,
+                list: list,
             }
         );
 
