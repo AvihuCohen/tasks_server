@@ -55,9 +55,16 @@ exports.getList = async (req, res, next) => {
 
 exports.createList = async (req, res, next) => {
     try {
-        const listName = req.body.name;
+        
+        let listName = req.body.name;
         const isPublic = req.body.isPublic;
         const isRemovable = req.body.isRemovable;
+        
+        const totalItems = await List.find({name: listName}).countDocuments();
+
+        if(totalItems > 0){
+            listName = listName + "(" + totalItems + ")";
+        } 
 
         errors.validationResultErrorHandler(req);
         const list = new List({
