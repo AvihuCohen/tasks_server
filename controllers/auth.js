@@ -63,13 +63,16 @@ exports.signUp = async (req, res, next) => {
 exports.login = async (req, res, next) => {
     try {
         errors.validationResultErrorHandler(req);
+
         const email = req.body.email;
         const password = req.body.password;
 
         const user = await User.findOne({ email: email });
         errors.errorCheckHandler(user, 'A user with this email could not be found.', 401);
+
         const isEqual = await bcrypt.compare(password, user.password);
         errors.errorCheckHandler(isEqual, 'Wrong password', 401);
+
         const token = jwt.sign(
             {
                 email: user.email,
@@ -78,10 +81,13 @@ exports.login = async (req, res, next) => {
             'fitzFarSeerIsTheTrueKingOfTheSixDuchies',
             { expiresIn: '1h' }
         );
-        console.log(token);
+        const expiresTimeInMiliseconds = (1000 * 60 * 60) ;
+
         res.status(200).json({
-            message: 'User Logged in successfully.',
-            token: token, userId: user._id.toString()
+            token: token,
+            userId: user._id.toString(),
+            expiresTimeInMiliseconds:expiresTimeInMiliseconds,
+            message: 'User Logged in successfully.'
         }
         );
 
