@@ -33,7 +33,7 @@ exports.getList = async (req, res, next) => {
     try {
         const listName = req.params.listName;
 
-        const list = await List.findOne({name: listName})
+        const list = await List.findOne({name: listName, creator: req.userId})
             .populate('tasks')
             .execPopulate();
         errors.errorCheckHandler(list, 'List was not found.', 404);
@@ -60,13 +60,14 @@ exports.createList = async (req, res, next) => {
         const isPublic = req.body.isPublic;
         const isRemovable = req.body.isRemovable;
         
-        const totalItems = await List.find({name: listName}).countDocuments();
+        const totalItems = await List.find({name: listName, creator: req.userId}).countDocuments();
 
         if(totalItems > 0){
             listName = listName + "(" + totalItems + ")";
         } 
 
         errors.validationResultErrorHandler(req);
+
         const list = new List({
             name: listName,
             isPublic: isPublic,
@@ -74,10 +75,15 @@ exports.createList = async (req, res, next) => {
             creator: req.userId,
             isRemovable: isRemovable
         });
+
         await list.save();
+
         const user = await User.findById(req.userId);
+
         user.lists.push(list);
+
         await user.save();
+        
         res.status(200).json({
             message: 'Create a new list successfully.',
             creator: {_id: user._id, name: user.name},

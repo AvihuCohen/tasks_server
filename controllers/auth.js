@@ -12,7 +12,6 @@ const TodoItem = require('../models/todoItem');
 exports.signUp = async (req, res, next) => {
     try {
         errors.validationResultErrorHandler(req);
-        // errors.errorCheckHandler(req.file, 'No image provided.', 422);
         
         let imagePath;
         
@@ -29,6 +28,7 @@ exports.signUp = async (req, res, next) => {
 
 
         const hashPassword = await bcrypt.hash(password, 12);
+        
         const user = new User({
             email: email,
             name: name,
@@ -36,7 +36,8 @@ exports.signUp = async (req, res, next) => {
             imagePath: imagePath,
             lists: []
         });
-        user.save();
+        
+        await user.save();
 
         const token = jwt.sign(
             {

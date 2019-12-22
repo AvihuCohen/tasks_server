@@ -1,6 +1,5 @@
 const express = require('express');
 const authController = require('../controllers/auth');
-const {body} = require('express-validator/check');
 
 //validations
 const validations = require('../util/validations/auth-validations');
@@ -8,10 +7,7 @@ const validations = require('../util/validations/auth-validations');
 // middleware
 const isAuth = require('../middlewares/is-auth');
 
-
-
 const router = express.Router();
-
 
 // /auth/signup => Post
 

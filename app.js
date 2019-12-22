@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+
 const multer = require('multer');
 const path = require('path');
 
@@ -17,7 +18,7 @@ const adminRoutes = require('./routes/admin');
 const authRoutes = require('./routes/auth');
 
 //Mongo Atlas Connection URI
-const mongoAtlasUri = 'mongodb+srv://avihu:avihucohen@todolistapp-5et3x.mongodb.net/TodoList?retryWrites=true&w=majority';
+const mongoAtlasUri = 'mongodb+srv://avihu:avi123456@todolistapp-5et3x.mongodb.net/TodoList?retryWrites=true&w=majority';
 
 
 const app = express();
@@ -30,7 +31,6 @@ app.use(
     multer({ storage: multerConfig.fileStorage, fileFilter: multerConfig.fileFilter}).single('image')
 );
 
-console.log("DDD " +  path.join(__dirname, 'images'));
 // make images folder a static folder
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
