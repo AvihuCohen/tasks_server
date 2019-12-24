@@ -1,6 +1,6 @@
 const {body} = require('express-validator/check');
 
-
+// Todo add messages to validations
 exports.editOrCreateListValidations =
     [
         body('name')
@@ -33,6 +33,10 @@ exports.editTodoItemValidations =
             .trim()
             .not()
             .isEmpty(),
+        body('note')
+            .trim()
+            .isLength({ max: 120 })
+        ,
         body('completed')
             .isBoolean(),
         body('important')

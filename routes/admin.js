@@ -25,13 +25,13 @@ router.put('/list/:listId', isAuth, validations.editOrCreateListValidations, adm
 // /admin/list/:listId => Delete
 router.delete('/list/:listId', isAuth, validations.removeListValidations, adminController.removeList);
 
-// /admin/todo-item => Post
+// /admin/todoItem => Post
 router.post('/todo-item/:listId', isAuth, validations.addTodoItemValidations, adminController.addTodoItemToList);
 
-// /admin/todo-item => Put
+// /admin/todoItem => Put
 router.put('/todo-item/:id', isAuth, validations.editTodoItemValidations, adminController.editTodoItemInList);
 
-// /admin/todo-item/:todo-item-Id => Delete
+// /admin/todoItem/:todoItem-Id => Delete
 router.delete('/todo-item/:id', isAuth, adminController.removeTodoItemFromList);
 
 module.exports = router;
