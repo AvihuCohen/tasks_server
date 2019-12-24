@@ -31,15 +31,16 @@ exports.getLists = async (req, res, next) => {
 
 exports.getList = async (req, res, next) => {
     try {
-        const listName = req.params.listName;
+        const listName = req.params.listName.split('_').join(' ');
 
         const list = await List.findOne({name: listName, creator: req.userId})
-            .populate('tasks')
-            .execPopulate();
+            .populate('tasks');
+
         errors.errorCheckHandler(list, 'List was not found.', 404);
 
         // if the list is defined public anyone can get it.
         const userIsAuthorizedToGetList = list.isPublic || list.creator.toString() === req.userId.toString();
+
         errors.errorCheckHandler(userIsAuthorizedToGetList, 'User is unauthorized.', 401);
 
         res.status(200).json({
@@ -55,16 +56,16 @@ exports.getList = async (req, res, next) => {
 
 exports.createList = async (req, res, next) => {
     try {
-        
+
         let listName = req.body.name;
         const isPublic = req.body.isPublic;
         const isRemovable = req.body.isRemovable;
-        
+
         const totalItems = await List.find({name: listName, creator: req.userId}).countDocuments();
 
-        if(totalItems > 0){
+        if (totalItems > 0) {
             listName = listName + "(" + totalItems + ")";
-        } 
+        }
 
         errors.validationResultErrorHandler(req);
 
@@ -83,7 +84,7 @@ exports.createList = async (req, res, next) => {
         user.lists.push(list);
 
         await user.save();
-        
+
         res.status(200).json({
             message: 'Create a new list successfully.',
             creator: {_id: user._id, name: user.name},
