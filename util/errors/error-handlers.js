@@ -2,10 +2,11 @@ const { validationResult } = require('express-validator/check');
 
 exports.validationResultErrorHandler = (req) => {
     const errors = validationResult(req);
+    console.log(errors);
     if (!errors.isEmpty()) {
-        const error = new Error('Validation failed, entered data is incorrect.');
+        const error = new Error(errors.array()[0].msg);
         error.statusCode = 422;
-        error.data = errors.array();
+        // console.log(error.data);
         throw error;
     }
 };

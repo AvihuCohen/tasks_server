@@ -7,6 +7,12 @@ const todoItemSchema = new Schema(
             type: String,
             require: true
         },
+
+        note: {
+            type: String,
+            require: true
+        },
+
         completed: {
             type: Boolean,
             require: true

@@ -1,4 +1,4 @@
-const {body} = require('express-validator/check');
+const { body } = require('express-validator/check');
 const User = require('../../models/user');
 
 exports.signupValidations =
@@ -6,8 +6,8 @@ exports.signupValidations =
         body('email')
             .isEmail()
             .withMessage("Please enter a valid email")
-            .custom((email, {req}) => {
-                return User.findOne({email: email})
+            .custom((email, { req }) => {
+                return User.findOne({ email: email })
                     .then(user => {
                         if (user) {
                             return Promise.reject('E-Mail address already exists!');
@@ -17,7 +17,7 @@ exports.signupValidations =
             .normalizeEmail(),
         body('password')
             .trim()
-            .isLength({min: 5}),
+            .isLength({ min: 5 }),
         body('name')
             .trim()
             .not()
@@ -32,8 +32,9 @@ exports.loginValidations =
             .withMessage("Please enter a valid email")
             .normalizeEmail(),
         body('password')
-            .trim()
-            .isLength({min: 5}),
+        .trim()
+        .isLength({ min: 5 })
+        .withMessage("Please enter a valid password!")
     ];
 
 exports.editProfileValidations =

@@ -162,6 +162,7 @@ exports.addTodoItemToList = async (req, res, next) => {
             task: task,
             completed: false,
             important: false,
+            note: "",
             creator: req.userId,
             belongTo: list._id
         });
@@ -208,6 +209,7 @@ exports.editTodoItemInList = async (req, res, next) => {
         errors.validationResultErrorHandler(req);
 
         const todoId = req.params.id;
+        const note = req.params.note;
         const task = req.body.task;
         const completed = req.body.completed;
         const important = req.body.important;
@@ -215,6 +217,7 @@ exports.editTodoItemInList = async (req, res, next) => {
         errors.errorCheckHandler(todo, 'Todo item was not found', 404);
 
         todo.task = task;
+        todo.note = note;
         todo.completed = completed;
         todo.important = important;
         await todo.save();
