@@ -174,7 +174,6 @@ exports.addTodoItemToList = async (req, res, next) => {
 
         res.status(200).json({
             message: 'Created a new todo item successfully.',
-            creator: {_id: user._id, name: user.name},
             todo: todo
         });
     } catch (err) {
@@ -185,7 +184,7 @@ exports.addTodoItemToList = async (req, res, next) => {
 
 exports.removeTodoItemFromList = async (req, res, next) => {
     try {
-        const todoId = req.params.id;
+        const todoId = req.params.taskId;
         const todo = await TodoItem.findById(todoId);
         errors.errorCheckHandler(todo, 'Todo item was not found', 404);
 
@@ -209,8 +208,8 @@ exports.editTodoItemInList = async (req, res, next) => {
     try {
         errors.validationResultErrorHandler(req);
 
-        const todoId = req.params.id;
-        const note = req.params.note;
+        const todoId = req.params.taskId;
+        const note = req.body.note;
         const task = req.body.task;
         const completed = req.body.completed;
         const important = req.body.important;
@@ -225,8 +224,7 @@ exports.editTodoItemInList = async (req, res, next) => {
 
         res.status(200).json({
             message: 'Todo item was updated successfully.',
-            creator: {_id: user._id, name: user.name},
-            todo: todo
+            task: todo
         });
     } catch (err) {
         errors.asyncErrorHandler(err, next);

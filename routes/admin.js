@@ -29,10 +29,10 @@ router.delete('/list/:listId', isAuth, validations.removeListValidations, adminC
 router.post('/todo-item/:listId', isAuth, validations.addTodoItemValidations, adminController.addTodoItemToList);
 
 // /admin/todoItem => Put
-router.put('/todo-item/:id', isAuth, validations.editTodoItemValidations, adminController.editTodoItemInList);
+router.put('/todo-item/:taskId', isAuth, validations.editTodoItemValidations, adminController.editTodoItemInList);
 
 // /admin/todoItem/:todoItem-Id => Delete
-router.delete('/todo-item/:id', isAuth, adminController.removeTodoItemFromList);
+router.delete('/todo-item/:taskId', isAuth, adminController.removeTodoItemFromList);
 
 module.exports = router;
 
