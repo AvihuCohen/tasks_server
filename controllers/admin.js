@@ -7,21 +7,19 @@ const TodoItem = require('../models/todoItem');
 
 exports.getLists = async (req, res, next) => {
     try {
+        const totalLists = await List.find({creator: req.userId}).countDocuments();
         const currentPage = req.query.page || 1;
-        const perPage = 10;
+        const perPage = totalLists || 10;
 
-        const totalItems = await List.find({creator: req.userId}).countDocuments();
         const userLists = await List.find({creator: req.userId})
             .skip((currentPage - 1) * perPage)
             .limit(perPage)
-            .populate('tasks')
-            .execPopulate();
+            .populate('tasks');
         errors.errorCheckHandler(userLists, "User doesn't has any list.", 404);
 
         res.status(200).json({
                 message: 'Fetched all user lists successfully!',
-                todoLists: userLists,
-                totalItems: totalItems
+                lists: userLists,
             }
         );
     } catch (err) {
@@ -188,16 +186,20 @@ exports.removeTodoItemFromList = async (req, res, next) => {
         const todo = await TodoItem.findById(todoId);
         errors.errorCheckHandler(todo, 'Todo item was not found', 404);
 
+
         const listId = todo.belongTo;
         const list = await List.findById(listId);
         errors.errorCheckHandler(list, 'List was not found', 404);
 
+
         list.tasks.pull(todoId);
+        await list.save();
         await TodoItem.findByIdAndRemove(todoId);
+
+
         res.status(200)
             .json({
                 message: 'Removed a todo item successfully.',
-                creator: {_id: user._id, name: user.name}
             });
     } catch (err) {
         errors.asyncErrorHandler(err, next);
