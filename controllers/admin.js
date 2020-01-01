@@ -229,6 +229,8 @@ exports.editTodoItemInList = async (req, res, next) => {
             task: todo
         });
     } catch (err) {
+        console.log("!");
+
         errors.asyncErrorHandler(err, next);
     }
 };
