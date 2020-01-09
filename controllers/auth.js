@@ -25,6 +25,7 @@ exports.signUp = async (req, res, next) => {
         const email = req.body.email;
         const name = req.body.name;
         const password = req.body.password;
+        const gender = req.body.gender;
 
 
         const hashPassword = await bcrypt.hash(password, 12);
@@ -32,6 +33,9 @@ exports.signUp = async (req, res, next) => {
         const user = new User({
             email: email,
             name: name,
+            gender: gender,
+            birthday: "",
+            phone: "",
             password: hashPassword,
             imagePath: imagePath,
             lists: []
@@ -52,7 +56,7 @@ exports.signUp = async (req, res, next) => {
         res.status(200).json({
             message: 'User signed up successfully.',
             token: token,
-            user: {name: user.name, email: user.email},
+            user: {name: user.name, email: user.email, gender: user.gender, birthday: user.birthday, phone: user.phone},
             expiresTimeInMiliseconds: expiresTimeInMiliseconds
         });
     } catch (err) {
@@ -86,7 +90,7 @@ exports.login = async (req, res, next) => {
 
         res.status(200).json({
                 token: token,
-                user: {name: user.name, email: user.email},
+                user: {name: user.name, email: user.email, gender: user.gender, birthday: user.birthday, phone: user.phone},
                 expiresTimeInMiliseconds: expiresTimeInMiliseconds,
                 message: 'User Logged in successfully.'
             }
@@ -103,12 +107,10 @@ exports.getUserProfile = async (req, res, next) => {
     try {
         const user = await User.findById(req.userId);
         errors.errorCheckHandler(user, 'User Not Found', 404);
-        let profile = {
-            name: user.name,
-            email: user.email,
-            imagePath: user.imagePath
-        };
-        res.status(200).json({profile: profile, userId: user._id.toString()});
+
+        res.status(200).json({
+            user: {name: user.name, email: user.email, gender: user.gender, birthday: user.birthday, phone: user.phone},
+        });
     } catch (err) {
         errors.asyncErrorHandler(err, next);
     }
@@ -117,20 +119,31 @@ exports.getUserProfile = async (req, res, next) => {
 //Todo - to update that user doesn't need to send a file
 exports.editUserProfile = async (req, res, next) => {
     try {
-        errors.validationResultErrorHandler(req);
-        errors.errorCheckHandler(req.file, 'No image provided.', 422);
-        const filePath = req.file.path;
-        const email = req.body.email;
-        const name = req.body.name;
+        // console.log("editing profile", req.body);
 
         const user = await User.findById(req.userId);
         errors.errorCheckHandler(user, 'User Not Found', 404);
-        if (filePath !== user.imagePath) {
-            files.clearImage(user.imagePath);
+
+        let password = user.password;
+        if (req.body.password) {
+            let newPassword = await bcrypt.hash(req.body.password, 12);
+            password = newPassword;
+
         }
-        user.imagePath = filePath;
-        user.email = email;
-        user.name = name;
+        const email = req.body.email;
+        const name = req.body.name;
+        const birthday = req.body.birthday;
+        const phone = req.body.phone;
+        const gender = req.body.gender;
+
+
+        user.email = email ? email : user.email;
+        user.name = name ? name : user.name;
+        user.birthday = birthday ? birthday : user.birthday;
+        user.phone = phone ? phone : user.phone;
+        user.gender = gender ? gender : user.gender;
+        user.password = password;
+
         const result = await user.save();
         res.status(200).json({message: 'User profile was updated.', user: result});
     } catch (e) {

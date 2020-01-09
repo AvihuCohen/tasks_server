@@ -8,6 +8,22 @@ const userSchema = new Schema(
             type: String,
             required: true
         },
+
+        gender: {
+            type: String,
+            required: true
+        },
+
+        phone: {
+            type: String,
+            required: false
+        },
+
+        birthday: {
+            type: String,
+            required: false
+        },
+
         password: {
             type: String,
             required: true
@@ -18,7 +34,7 @@ const userSchema = new Schema(
         },
         imagePath: {
             type: String,
-            required: true
+            required: false
         },
         lists: [
             {
