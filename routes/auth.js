@@ -26,4 +26,11 @@ router.put('/profile', isAuth, authController.editUserProfile);
 // /auth/signup => Delete
 router.delete('/profile', isAuth, authController.deleteAccount);
 
+router.test('/test', (req, res) => {
+    res.status(200).json({
+            message: 'Test heruko.'
+        }
+    );
+});
+
 module.exports = router;
