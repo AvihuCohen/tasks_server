@@ -18,7 +18,8 @@ const adminRoutes = require('./routes/admin');
 const authRoutes = require('./routes/auth');
 
 //Mongo Atlas Connection URI
-const mongoAtlasUri = 'mongodb+srv://avihu:avi123456@todolistapp-5et3x.mongodb.net/TodoList?retryWrites=true&w=majority';
+const mongoAtlasUri = 'mongodb+srv://' + process.env.MONGO_USER + ':' + process.env.MONGO_PASSWORD + '@todolistapp-5et3x.mongodb.net/TodoList?retryWrites=true&w=majority';
+// avihu:avi123456
 
 
 const app = express();
@@ -49,11 +50,12 @@ app.use('/auth', authRoutes);
 // Catch all errors that thrown
 app.use(errorMiddleware);
 
+const port = process.env.PORT || 8080;
 
 // Connect to DB
 mongoose.connect(mongoAtlasUri)
     .then(result => {
         console.log("MongoDB Connected");
-        app.listen(8080);
+        app.listen(port);
     })
     .catch(err => console.log(err));
